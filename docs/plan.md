@@ -93,6 +93,7 @@ The same at every pitch, as the design intends: the synthesis window (16 ms) and
 ## 7. On the Pi
 
 - [ ] Build in the arm64 build root and install from there, so the next package does not wipe it.
+- [x] A first try (28 October 2026): commit `93b2b01` built natively on the Pi (`OPT="-O2 -mcpu=cortex-a76"`), `make test` passing with the PC's numbers; installed to `/opt/peepo/lib/lv2/octant.lv2`, added to the installed inventory and overlay (Pitch; Voices and Shape groups) and merged into `catalogue.json` (352 modules), the engine and UI restarted. Backup of the three files in `/opt/peepo/share/peepo/backups/octant-20261028T125733Z/`. Not in Peepo's repository yet, so the next package removes it. `test_voices` on the Pi: 5.15 % of one core at 48 kHz with all four voices (target 5 %), worst hop 186 us against 2.7 ms in a 128-frame period.
 - [ ] Played with a guitar: single notes on every string, chords, bends; the delay felt on the low strings noted.
 - [ ] The design's CPU target, with xruns measured over 10 minutes at 128 frames.
 - [ ] Then the version is done: update the README if anything changed, and record it in Peepo's docs.
