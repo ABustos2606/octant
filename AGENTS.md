@@ -1,6 +1,6 @@
 # Octant
 
-Octant is an LV2 plugin that adds octaves to what you play, two down to two up, and follows chords as well as single notes, because each note is shifted in its own narrow band. It is a plugin written for **Peepo**, and Peepo is the host that matters. Read `docs/design.md` before changing behaviour or ports: it is the spec. `docs/plan.md` says what is done and what is next.
+Octant is an LV2 plugin that adds octaves to what you play, two down to two up, and follows chords as well as single notes, because a phase vocoder moves every partial of the spectrum on its own. It is a plugin written for **Peepo**, and Peepo is the host that matters. Read `docs/design.md` before changing behaviour or ports: it is the spec. `docs/plan.md` says what is done and what is next.
 
 ## Peepo
 
@@ -15,8 +15,8 @@ Peepo is a guitar pedal built on a Raspberry Pi 5 (2 GB, Debian 12 arm64) runnin
 
 ## Host limits that shape the code
 
-- **Ingen runs a block in slices** when a control changes during a period, moving the audio pointers to each slice. Everything is per sample (filters, phases, smoothing) and carries on across slices; `tests/test_lv2.cpp` runs it that way. Never assume one `run()` per period.
-- **xruns are the limit.** In `run()`: no allocation, no locks, no file or console I/O. Band coefficients are computed in `instantiate`, for the host's sample rate. Filter state is flushed before it reaches denormals.
+- **Ingen runs a block in slices** when a control changes during a period, moving the audio pointers to each slice. Everything is per sample (a hop's FFT work falls on the sample that completes it) and carries on across slices; `tests/test_lv2.cpp` runs it that way. Never assume one `run()` per period.
+- **xruns are the limit.** In `run()`: no allocation, no locks, no file or console I/O. Windows, tables and buffers are made in `instantiate`, for the host's sample rate. State is flushed before it reaches denormals. The worst single hop has to fit in a period.
 - **Blocks run on several threads.** Instances share nothing.
 - **No LV2 state.** Everything is in control ports, so patches save it.
 
@@ -31,7 +31,7 @@ Peepo is a guitar pedal built on a Raspberry Pi 5 (2 GB, Debian 12 arm64) runnin
 
 ## Testing
 
-- `make test` (Linux; under WSL on the PC): `ttl_check`, the band bank on its own (`test_bank`), the voices (`test_voices`: pitch, level, purity, delay, chords) and the plugin sliced as Ingen runs it (`test_lv2`).
+- `make test` (Linux; under WSL on the PC): `ttl_check`, the FFT on its own (`test_fft`), the voices (`test_voices`: pitch, level, purity, delay, chords) and the plugin sliced as Ingen runs it (`test_lv2`).
 - Measurements against the design's targets are recorded in `docs/plan.md`, not just passed or failed.
 - `make render` builds `build/render`, which runs a WAV through the plugin, for listening on the PC.
 - Peepo's development engine runs under WSL (Debian) with Ingen in `/opt/peepo`; Peepo's `tools/ingen-spike/env.sh` starts it.
