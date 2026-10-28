@@ -1,0 +1,98 @@
+# SPDX-License-Identifier: GPL-2.0-or-later
+# Copyright (c) 2026 Alejandro Bustos
+@prefix lv2: <http://lv2plug.in/ns/lv2core#> .
+@prefix doap: <http://usefulinc.com/ns/doap#> .
+@prefix foaf: <http://xmlns.com/foaf/0.1/> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix pprops: <http://lv2plug.in/ns/ext/port-props#> .
+@prefix units: <http://lv2plug.in/ns/extensions/units#> .
+
+<https://github.com/ABustos2606/octant#octant>
+    a lv2:Plugin, lv2:PitchPlugin ;
+    doap:name "Octant" ;
+    doap:license <https://spdx.org/licenses/GPL-2.0-or-later> ;
+    doap:maintainer [ foaf:name "Alejandro Bustos" ; foaf:homepage <https://github.com/ABustos2606> ] ;
+    doap:homepage <https://github.com/ABustos2606/octant> ;
+    rdfs:comment "Adds octaves to what you play, two down to two up, each with its own level; follows chords as well as single notes." ;
+    lv2:minorVersion 1 ;
+    lv2:microVersion 0 ;
+    lv2:optionalFeature lv2:hardRTCapable ;
+    lv2:port
+    [
+        a lv2:InputPort, lv2:AudioPort ;
+        lv2:index 0 ;
+        lv2:symbol "in" ;
+        lv2:name "In"
+    ],
+    [
+        a lv2:OutputPort, lv2:AudioPort ;
+        lv2:index 1 ;
+        lv2:symbol "out" ;
+        lv2:name "Out"
+    ],
+    [
+        a lv2:InputPort, lv2:ControlPort ;
+        lv2:index 2 ;
+        lv2:symbol "dry" ;
+        lv2:name "Dry" ;
+        lv2:default 1.0 ;
+        lv2:minimum 0.0 ;
+        lv2:maximum 1.0
+    ],
+    [
+        a lv2:InputPort, lv2:ControlPort ;
+        lv2:index 3 ;
+        lv2:symbol "down_2" ;
+        lv2:name "2 oct down" ;
+        lv2:default 0.0 ;
+        lv2:minimum 0.0 ;
+        lv2:maximum 1.0
+    ],
+    [
+        a lv2:InputPort, lv2:ControlPort ;
+        lv2:index 4 ;
+        lv2:symbol "down_1" ;
+        lv2:name "1 oct down" ;
+        lv2:default 0.6 ;
+        lv2:minimum 0.0 ;
+        lv2:maximum 1.0
+    ],
+    [
+        a lv2:InputPort, lv2:ControlPort ;
+        lv2:index 5 ;
+        lv2:symbol "up_1" ;
+        lv2:name "1 oct up" ;
+        lv2:default 0.0 ;
+        lv2:minimum 0.0 ;
+        lv2:maximum 1.0
+    ],
+    [
+        a lv2:InputPort, lv2:ControlPort ;
+        lv2:index 6 ;
+        lv2:symbol "up_2" ;
+        lv2:name "2 oct up" ;
+        lv2:default 0.0 ;
+        lv2:minimum 0.0 ;
+        lv2:maximum 1.0
+    ],
+    [
+        a lv2:InputPort, lv2:ControlPort ;
+        lv2:index 7 ;
+        lv2:symbol "tone" ;
+        lv2:name "Tone" ;
+        lv2:default 16000.0 ;
+        lv2:minimum 200.0 ;
+        lv2:maximum 16000.0 ;
+        lv2:portProperty pprops:logarithmic ;
+        units:unit units:hz
+    ],
+    [
+        a lv2:InputPort, lv2:ControlPort ;
+        lv2:index 8 ;
+        lv2:symbol "swell" ;
+        lv2:name "Swell" ;
+        lv2:default 0.0 ;
+        lv2:minimum 0.0 ;
+        lv2:maximum 2.0 ;
+        units:unit units:s
+    ] .
